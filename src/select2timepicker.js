@@ -24,7 +24,7 @@
     if (minute.length == 1) { minute = '0' + minute; }
 
     return hour + ':' + minute;
-  },
+  };
 
   var tagsBuilder = function(options) {
     var from     = options.from == null ? 0 : parseToMinutes(options.from);
