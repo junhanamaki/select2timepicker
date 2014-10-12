@@ -21,11 +21,11 @@ shows in the list the events that are happening that that time.
 
 2. Start the plugin
 
-2.1 With default configuration
+  2.1 With default configuration
 
     $('input#target').select2timepicker();
 
-2.2 Setting the range of times to display and the interval
+  2.2 Setting the range of times to display and the interval
 
     $('input#target').select2timepicker({
         from:     '05:00',
@@ -33,7 +33,7 @@ shows in the list the events that are happening that that time.
         interval: 10
       });
 
-2.3 With a collection of items to show in the list
+  2.3 With a collection of items to show in the list
 
     $('input#target').select2timepicker({
         from: '05:00',
@@ -47,7 +47,7 @@ shows in the list the events that are happening that that time.
         ]
       });
 
-2.4 With customized select2
+  2.4 With customized select2
 
     $('input#target').select2timepicker({
         select2: {
