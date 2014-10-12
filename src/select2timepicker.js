@@ -10,14 +10,6 @@
     return;
   };
 
-  var isValidSelection = function(time) {
-    return /^([0-9]|[0-1][0-9]|[2][0-3]):[0-5][0-9]$/.test(time);
-  };
-
-  var isValidChoice: function(time) {
-    return /^([0-2]|([0-9]|[0-1][0-9]|[2][0-3])|([0-9]|[0-1][0-9]|[2][0-3]):|([0-9]|[0-1][0-9]|[2][0-3]):[0-5]|([0-9]|[0-1][0-9]|[2][0-3]):[0-5][0-9])$/.test(time);
-  };
-
   var parseToMinutes = function(string) {
     var tokenizedTime = time.split(':');
 
@@ -34,10 +26,12 @@
     return hour + ':' + minute;
   },
 
-  var timesBuilder = function(options) {
-    var from = options.from == null ? 0 : parseToMinutes(options.from);
-    var to = options.to == null ? 1440 : parseToMinutes(options.to);
-    var interval = options.interval == null = 15 : options.interval;
+  var tagsBuilder = function(options) {
+    var from     = options.from == null ? 0 : parseToMinutes(options.from);
+    var to       = options.to == null ? 1440 : parseToMinutes(options.to);
+    var interval = options.interval == null ? 15 : options.interval;
+    var items    = options.items == null ? [] : options.items;
+
     var times = [];
 
     for (auxFrom = from ; auxFrom < to ; auxFrom += interval) {
@@ -46,8 +40,8 @@
       times = times.concat({ id: time, text: time, totalMinutes: auxFrom, pairedItems: [] });
     }
 
-    $.each(options.items, function(index, item) {
-      $.each(items.times, function(index, time) {
+    $.each(items, function(index, item) {
+      $.each(item.times, function(index, time) {
         var totalMinutes = parseToMinutes(time),
             low          = 0,
             high         = times.length,
@@ -74,7 +68,6 @@
     return times;
   };
 
-
   window.Select2TimePicker = function(element) {
     this.element = element;
     this.$element = $(element);
@@ -82,7 +75,7 @@
   };
 
   var Select2TimePickerFunctions = {
-    initialize: function(options) {
+    init: function(options) {
       $.extend(this.options, options);
 
       this.$element.select2(select2Options);
@@ -90,7 +83,7 @@
       this
         .$element
         .on('select2-selecting', function(e) {
-          if (isValidSelection(e.val) == false) {
+          if (/^([0-9]|[0-1][0-9]|[2][0-3]):[0-5][0-9]$/.test(e.val) == false) {
             e.preventDefault();
             return;
           }
@@ -101,6 +94,8 @@
             e.object.text = '0' + e.object.text;
           }
         });
+
+      this.$element.data('select2timepicker', this);
     },
 
     buildSelect2Options: function(options) {
@@ -110,7 +105,7 @@
         minimumInputLength: 0,
         maximumInputLength: 5,
 
-        tag: ,
+        tags: tagsBuilder(this.options),
         dropdownCssClass: this.options.dropdownCssClass,
 
         matcher: function(term, text) {
@@ -148,7 +143,7 @@
         },
 
         createSearchChoice: function(term, data) {
-          if (isValidChoice(term)) {
+          if(/^([0-2]|([0-9]|[0-1][0-9]|[2][0-3])|([0-9]|[0-1][0-9]|[2][0-3]):|([0-9]|[0-1][0-9]|[2][0-3]):[0-5]|([0-9]|[0-1][0-9]|[2][0-3]):[0-5][0-9])$/.test(term)) {
             return { id: term, text: term };
           }
         },
@@ -159,6 +154,8 @@
       };
     }
   };
+
+  $.extend(window.Select2TimePicker.prototype, Select2TimePickerFunctions);
 
   $.fn.select2timepicker = function(options) {
     if (this.length == 0) { return this; }
