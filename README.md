@@ -1,4 +1,4 @@
-timeselect2
+select2-timepicker
 ===========
 
-time selector with a few tricks
+Time selector with a few tricks, powered by [select2](https://github.com/ivaynberg/select2)
