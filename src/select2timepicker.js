@@ -10,7 +10,7 @@
     return;
   };
 
-  var parseToMinutes = function(string) {
+  var parseToMinutes = function(time) {
     var tokenizedTime = time.split(':');
 
     return (parseInt(tokenizedTime[0]) * 60) + parseInt(tokenizedTime[1]);
@@ -34,7 +34,7 @@
 
     var times = [];
 
-    for (auxFrom = from ; auxFrom < to ; auxFrom += interval) {
+    for (var auxFrom = from ; auxFrom < to ; auxFrom += interval) {
       var time = parseToString(auxFrom);
 
       times = times.concat({ id: time, text: time, totalMinutes: auxFrom, pairedItems: [] });
@@ -69,16 +69,26 @@
   };
 
   window.Select2TimePicker = function(element) {
-    this.element = element;
+    this.element  = element;
     this.$element = $(element);
-    this.options = $.extend({}, $.fn.select2timepicker.defaults);
+    this.options  = $.extend({}, $.fn.select2timepicker.defaults);
+    this.select2options = $.extend({}, $.fn.select2timepicker.defaults.select2);
+    delete this.options.select2;
   };
 
   var Select2TimePickerFunctions = {
     init: function(options) {
       $.extend(this.options, options);
+      $.extend(this.select2options, options.select2);
+      delete this.options.select2;
 
-      this.$element.select2(select2Options);
+      this.initSelect2();
+
+      this.$element.data('select2timepicker', this);
+    },
+
+    initSelect2: function() {
+      this.$element.select2(this.buildSelect2Options());
 
       this
         .$element
@@ -94,19 +104,16 @@
             e.object.text = '0' + e.object.text;
           }
         });
-
-      this.$element.data('select2timepicker', this);
     },
 
-    buildSelect2Options: function(options) {
+    buildSelect2Options: function() {
       var self = this;
 
-      return {
+      return $.extend(this.select2options, {
         minimumInputLength: 0,
         maximumInputLength: 5,
 
         tags: tagsBuilder(this.options),
-        dropdownCssClass: this.options.dropdownCssClass,
 
         matcher: function(term, text) {
           if (term.length == 1) {
@@ -149,15 +156,15 @@
         },
 
         formatNoMatches: function(term) {
-          return 'Invalid time format, format must be hh:mm';
+          return self.options.invalidFormat(term);
         }
-      };
+      });
     }
   };
 
   $.extend(window.Select2TimePicker.prototype, Select2TimePickerFunctions);
 
-  $.fn.select2timepicker = function(options) {
+  $.fn.select2timepicker = function(options, select2Options) {
     if (this.length == 0) { return this; }
 
     return this.each(function() {
@@ -166,17 +173,28 @@
   };
 
   $.fn.select2timepicker.defaults = {
-    from:     0,
-    to:       1440,
+    from:     null,
+    to:       null,
     interval: 15,
     items:    [],
-
-    dropdownCssClass: '',
 
     singleSelection: function(item) { return '<div>' + item.text + '</div>'; },
     multiSelection:  function(item) { return '<div><b>' + item.text + '</b></div>'; },
     singleResult:    function(item, markedupText) { return '<div>' + markedupText + '</div>'; },
     multiResult:     function(item, markedupText) { return '<div><b>' + markedupText + '</b><span>' + item.pairedItems.join(', ') + '</span></div>'; },
-    invalidFormat:   function(term) { return 'Invalid time format, must follow the format hh:mm'; }
+    invalidFormat:   function(term) { return 'Invalid time format, must follow the format hh:mm'; },
+
+    select2: {
+      // you can still mess around with select2 by passing options in here
+      // except the following values will always be overridden by select2timepicker:
+      // - minimumInputLength
+      // - maximumInputLength
+      // - tags
+      // - matcher
+      // - formatSelection
+      // - formatResult
+      // - createSearchChoice
+      // - formatNoMatches
+    }
   };
 })(jQuery);
