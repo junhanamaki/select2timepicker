@@ -23,37 +23,37 @@ shows in the list the events that are happening that that time.
 
   2.1 With default configuration
 
-    $('input#target').select2timepicker();
+        $('input#target').select2timepicker();
 
   2.2 Setting the range of times to display and the interval
 
-    $('input#target').select2timepicker({
-        from:     '05:00',
-        to:       '18:00',
-        interval: 10
-      });
+        $('input#target').select2timepicker({
+            from:     '05:00',
+            to:       '18:00',
+            interval: 10
+          });
 
   2.3 With a collection of items to show in the list
 
-    $('input#target').select2timepicker({
-        from: '05:00',
-        to:   '18:00',
-        interval: 10,
-        items: [
-          { name: 'Wake up', times: ['05:20'] },
-          { name: 'Dance', times: ['05:20'] },
-          { name: 'Eat', times: ['07:00', '13:00'] },
-          { name: 'Drink', times: ['07:14'] }
-        ]
-      });
+        $('input#target').select2timepicker({
+            from: '05:00',
+            to:   '18:00',
+            interval: 10,
+            items: [
+              { name: 'Wake up', times: ['05:20'] },
+              { name: 'Dance', times: ['05:20'] },
+              { name: 'Eat', times: ['07:00', '13:00'] },
+              { name: 'Drink', times: ['07:14'] }
+            ]
+          });
 
   2.4 With customized select2
 
-    $('input#target').select2timepicker({
-        select2: {
-          width: '100%'
-        }
-      });
+        $('input#target').select2timepicker({
+            select2: {
+              width: '100%'
+            }
+          });
 
 ## Test drive
 
