@@ -21,7 +21,7 @@ You can try it out at http://jsfiddle.net/csad0g6s/3/
 
 1. Create html input
 
-    \<input id='target'></input>
+    \<input id='target'>\</input>
 
 2. Start the plugin
 
