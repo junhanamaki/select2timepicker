@@ -78,9 +78,11 @@
 
   var Select2TimePickerFunctions = {
     init: function(options) {
-      $.extend(this.options, options);
-      $.extend(this.select2options, options.select2);
-      delete this.options.select2;
+      if (options !== undefined) {
+        $.extend(this.options, options);
+        $.extend(this.select2options, options.select2);
+        delete this.options.select2;
+      }
 
       this.initSelect2();
 
