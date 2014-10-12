@@ -8,6 +8,10 @@ Select2TimePicker is a jQuery plugin powered by Select2, which allows to select
 time from a predetermined list, or by accepting user input. Besides that, it also
 shows in the list the events that are happening that that time.
 
+## Test drive
+
+You can try it out at http://jsfiddle.net/csad0g6s/3/
+
 ## Dependencies
 
   * [jQuery](https://github.com/jquery/jquery)
@@ -54,7 +58,3 @@ shows in the list the events that are happening that that time.
               width: '100%'
             }
           });
-
-## Test drive
-
-You can try it out at http://jsfiddle.net/csad0g6s/3/
