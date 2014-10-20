@@ -116,6 +116,7 @@
         maximumInputLength: 5,
 
         tags: tagsBuilder(this.options),
+        maximumSelectionSize: this.options.maxLimit,
 
         matcher: function(term, text) {
           if (term.length == 1) {
@@ -157,9 +158,9 @@
           }
         },
 
-        formatNoMatches: function(term) {
-          return self.options.invalidFormat(term);
-        }
+        formatNoMatches: this.options.invalidFormat,
+
+        formatSelectionTooBig: this.options.maxLimitMessage
       });
     }
   };
@@ -179,18 +180,22 @@
     to:       null,
     interval: 15,
     items:    [],
+    maxLimit: null,
 
     singleSelection: function(item) { return '<div>' + item.text + '</div>'; },
     multiSelection:  function(item) { return '<div><b>' + item.text + '</b></div>'; },
     singleResult:    function(item, markedupText) { return '<div>' + markedupText + '</div>'; },
     multiResult:     function(item, markedupText) { return '<div><b>' + markedupText + '</b><span>' + item.pairedItems.join(', ') + '</span></div>'; },
     invalidFormat:   function(term) { return 'Invalid time format, must follow the format hh:mm'; },
+    maxLimitMessage: function(limit) { return 'You can only select ' + limit + ' time'; },
 
     select2: {
       // you can still mess around with select2 by passing options in here
       // except the following values will always be overridden by select2timepicker:
       // - minimumInputLength
       // - maximumInputLength
+      // - maximumSelectionSize
+      // - formatSelectionTooBig
       // - tags
       // - matcher
       // - formatSelection
