@@ -167,7 +167,7 @@
 
   $.extend(window.Select2TimePicker.prototype, Select2TimePickerFunctions);
 
-  $.fn.select2timepicker = function(options, select2Options) {
+  $.fn.select2timepicker = function(options) {
     if (this.length == 0) { return this; }
 
     return this.each(function() {
