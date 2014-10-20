@@ -1,6 +1,6 @@
 ## Select2TimePicker
 
-Time selector with a few tricks
+Time selector with a few tricks, powered by [Select2](https://github.com/ivaynberg/select2)
 
 ## What is it
 
@@ -51,7 +51,22 @@ You can try it out at http://jsfiddle.net/csad0g6s/3/
             ]
           });
 
-  2.4 With customized select2
+  2.4 Limit number of selectable times
+
+        $('input#target').select2timepicker({
+            from: '05:00',
+            to:   '18:00',
+            interval: 10,
+            items: [
+              { name: 'Wake up', times: ['05:20'] },
+              { name: 'Dance', times: ['05:20'] },
+              { name: 'Eat', times: ['07:00', '13:00'] },
+              { name: 'Drink', times: ['07:14'] }
+            ],
+            maxLimit: 3
+          });
+
+  2.5 With customized select2
 
         $('input#target').select2timepicker({
             select2: {
